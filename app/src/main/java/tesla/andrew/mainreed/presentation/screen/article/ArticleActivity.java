@@ -9,6 +9,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -55,6 +60,20 @@ public class ArticleActivity extends AppCompatActivity {
 
         article.setText(currentArticle.getDescription());
         published.setText(currentArticle.getPublishedAt());
+        String string = currentArticle.getPublishedAt();
+        if(string != null && !string.isEmpty()) {
+            try {
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                Date date = dateFormat.parse(string);
+                DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+                String dateStr = formatter.format(date);
+
+                published.setText(dateStr);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
         source.setText(currentArticle.getSubscribeKey());
 
         if(currentArticle.getUrlToImage() != null && !currentArticle.getUrlToImage().isEmpty()) {

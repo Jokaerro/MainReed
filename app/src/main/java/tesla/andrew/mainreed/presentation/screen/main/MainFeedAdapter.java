@@ -11,8 +11,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,7 +64,21 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.ViewHo
         if(data.get(position) != null) {
             holder.title.setText(data.get(position).getTitle());
             holder.source.setText(data.get(position).getSubscribeKey());
-            holder.published.setText(data.get(position).getPublishedAt());
+
+            String string = data.get(position).getPublishedAt();
+            if(string != null && !string.isEmpty()) {
+                try {
+                    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                    Date date = dateFormat.parse(string);
+                    DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+                    String dateStr = formatter.format(date);
+
+                    holder.published.setText(dateStr);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+
             if(data.get(position).getUrlToImage() != null && !data.get(position).getUrlToImage().isEmpty()) {
                 Picasso.with(context).load(data.get(position).getUrlToImage())
                         .error(R.drawable.missed_photo)
