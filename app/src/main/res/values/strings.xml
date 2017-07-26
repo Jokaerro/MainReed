@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">MainReed</string>
+    <string name="loading">Please wait, while loading…</string>
+    <string name="error">Something wrong, please try later</string>
+</resources>
